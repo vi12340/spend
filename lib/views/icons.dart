@@ -1,0 +1,66 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+
+class icons{
+  IconData icon;
+  icons(this.icon);
+}
+
+List<icons> listIcon = [
+  icons(MdiIcons.babyFaceOutline),
+  icons(MdiIcons.carOutline),
+  icons(MdiIcons.phoneInTalkOutline),
+  icons(Icons.directions_bike_outlined),
+  icons(Icons.sledding_outlined),
+  icons(MdiIcons.giftOutline),
+  icons(MdiIcons.gamepadVariantOutline),
+  icons(MdiIcons.medicationOutline),
+  icons(Icons.smoking_rooms_outlined),
+  icons(MdiIcons.breadSliceOutline),
+  icons(MdiIcons.accountMultipleOutline),
+  icons(MdiIcons.alertOutline),
+  icons(MdiIcons.accountSchoolOutline),
+  icons(MdiIcons.archiveEditOutline),
+  icons(MdiIcons.bankOutline),
+  icons(MdiIcons.bellRingOutline),
+  icons(MdiIcons.brushOutline),
+  icons(MdiIcons.cardsHeartOutline),
+  icons(MdiIcons.cardsSpadeOutline),
+  icons(MdiIcons.candyOutline),
+  icons(MdiIcons.cameraEnhanceOutline),
+  icons(MdiIcons.cityVariantOutline),
+  icons(MdiIcons.coffeeOutline),
+  icons(MdiIcons.diamondOutline),
+  icons(MdiIcons.foodDrumstickOutline),
+  icons(MdiIcons.lightbulbOnOutline),
+  icons(MdiIcons.lockOutline),
+  icons(MdiIcons.magnifyPlusOutline),
+  icons(MdiIcons.musicNoteOutline),
+  icons(MdiIcons.pigVariantOutline),
+  icons(MdiIcons.tshirtVOutline),
+  icons(MdiIcons.umbrellaOutline),
+  icons(MdiIcons.videoPlusOutline),
+  icons(MdiIcons.vacuumOutline),
+  icons(MdiIcons.wateringCanOutline),
+  icons(MdiIcons.virusOutline),
+  icons(MdiIcons.truckMinusOutline),
+  icons(MdiIcons.timerMusicOutline),
+  icons(MdiIcons.tagOutline),
+  icons(MdiIcons.trophyOutline),
+  icons(MdiIcons.thumbUpOutline),
+  icons(MdiIcons.sproutOutline),
+  icons(MdiIcons.starOutline),
+  icons(MdiIcons.sofaSingleOutline),
+  icons(MdiIcons.sharkFinOutline),
+  icons(MdiIcons.rocketLaunchOutline),
+  icons(MdiIcons.rabbitVariantOutline),
+  icons(MdiIcons.potMixOutline),
+  icons(MdiIcons.lampOutline),
+  icons(MdiIcons.keyOutline),
+  icons(MdiIcons.headCheckOutline),
+  icons(MdiIcons.flowerOutline),
+  icons(MdiIcons.databaseOutline),
+  icons(MdiIcons.bugStopOutline),
+];
