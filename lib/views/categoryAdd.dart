@@ -62,7 +62,6 @@ class _categoryAddState extends State<categoryAdd> {
                     child: TextButton(
                       onPressed: (){
                         dbHelper!.insertCategory(categoryModel(name: controller.text, icon: 'MdiIcons.gamepadVariantOutline', color: 'Colors.grey'));
-                        controller.clear();
                         },
                       child: const Text('Save')
                     )

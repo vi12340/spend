@@ -20,11 +20,15 @@ class manageModel {
     };
   }
 
-  manageModel.fromMap(Map<String, dynamic> res)
-      : id = res['id'],
-        idCategory = res['idCategory'],
-        price = res['price'],
-        type = res['type'],
-        dateTime = res['dateTime'],
-        comment = res['comment'];
+  factory manageModel.fromMap(Map<String, dynamic> res)
+  {
+    return manageModel(
+        id : res['id'],
+        idCategory : res['idCategory'],
+        price : res['price'],
+        type : res['type'],
+        dateTime : res['dateTime'],
+        comment : res['comment']
+    );
+  }
 }

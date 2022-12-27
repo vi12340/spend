@@ -40,17 +40,21 @@ class _categoryState extends State<category> {
         body: FutureBuilder(
           future: listCategory,
           builder: (context, snapshot){
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-                itemBuilder: (context, index){
-                final item = snapshot.data![index];
+            if(snapshot.hasData){
+              return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index){
+                    final item = snapshot.data![index];
                     return Card(
-                        child: ListTile(
-                          title: Text(item.name),
+                      child: ListTile(
+                        title: Text(item.name),
                       ),
                     );
-                }
-            );
+                  }
+              );
+            }else{
+              return CircularProgressIndicator();
+            }
           },
         )
     );

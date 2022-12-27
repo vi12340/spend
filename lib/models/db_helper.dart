@@ -25,9 +25,10 @@ class DbHelper {
   }
 
   _onCreat(Database db, int version) async{
+    
     await db.execute('CREATE TABLE budget(id INTEGER PRIMARY KEY AUTOINCREMENT, price INTEGER, dateTime TEXT)');
     await db.execute('CREATE TABLE category(idCategory INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, icon TEXT, color TEXT)');
-    await db.execute('CREATE TABLE manage(id INTEGER PRIMARY KEY AUTOINCREMENT, idCategory INTEGER, price INTEGER, type TEXT, dateTime TEXT, comment TEXT, FOREIGN KEY (idCategory) REFERENCES category(idCategory))');
+    await db.execute('CREATE TABLE manage(id INTEGER PRIMARY KEY AUTOINCREMENT, idCategory INTEGER, price INTEGER, type TEXT,dateTime TEXT, comment TEXT, FOREIGN KEY (idCategory) REFERENCES category(idCategory))');
   }
 
   Future<List<budgetModel>> getBudget() async{
@@ -48,10 +49,16 @@ class DbHelper {
   //   return queryResual.map((e) => manageModel.fromMap(e)).toList();
   // }
 
+  // Future<List<manageModel>> getManage() async{
+  //   var dbClient = await db;
+  //   List<Map<String, dynamic>> queryResual = await dbClient!.query('manage');
+  //   return queryResual.map((e) => manageModel.fromMap(e)).toList() : [];
+  // }
+
   Future<List<manageModel>> getManage() async{
     var dbClient = await db;
-    List<Map<String, dynamic>> queryResual = await dbClient!.query('manage');
-    return queryResual.map((e) => manageModel.fromMap(e)).toList();
+    List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT * FROM manage');
+    return queryResual.toList().map((e) => manageModel.fromMap(e)).toList();
   }
 
   Future<budgetModel> insertBudget(budgetModel budget) async{
@@ -102,11 +109,26 @@ class DbHelper {
     return await dbClient!.delete('manage', where: 'id=?', whereArgs: [id]);
   }
 
-  Future sum() async{
+  Future<List> getTypePrice() async{
     var dbClient = await db;
-    return await dbClient!.rawQuery('SELECT SUM(price) FROM budget');
+    List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT type, price FROM manage');
+    return queryResual.map((e) => manageModel.fromMap(e)).toList();
   }
 
+  Future sumBudget() async{
+    var dbClient = await db;
+     return await dbClient!.rawQuery('SELECT SUM(price) FROM budget');
+  }
+
+  Future sumIncome() async{
+    var dbClient = await db;
+    return await dbClient!.rawQuery('SELECT SUM(price) FROM manage WHERE type = "Thu"');
+  }
+
+  Future sumSpend() async{
+    var dbClient = await db ;
+    return await dbClient!.rawQuery('SELECT SUM(price) FROM manage WHERE type = "Chi"');
+  }
 
 }
 

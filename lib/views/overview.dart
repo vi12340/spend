@@ -14,15 +14,15 @@ class overview extends StatefulWidget {
 
 class _overviewState extends State<overview> {
   DbHelper? dbHelper;
-  late Future<List<manageModel>> listManage;
-  late Future sum;
+  late Future listManage;
+  late Future listSpend;
 
   @override
   void initState() {
     super.initState();
     dbHelper = DbHelper();
     listManage = dbHelper!.getManage();
-    sum = dbHelper!.sum();
+    listSpend = dbHelper!.sumSpend();
   }
 
   @override
@@ -68,33 +68,43 @@ class _overviewState extends State<overview> {
                   ),
                 ),
                 FutureBuilder(
-                    builder: (context, snapshot){
-                      return Container(
-                        child: Text(snapshot.data.toString()),
-                      );
-                    }
-                )
+                    future: dbHelper!.sumBudget(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text(snapshot!.data.toString());
+                      } else {
+                        return Container(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    })
               ],
             ),
             Container(
               height: 500,
               padding: EdgeInsets.only(top: 20),
               child: FutureBuilder(
-                future: listManage,
-                builder: (context, snapshot){
-                return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      final item = snapshot.data![index];
-                      return Card(
-                        child: ListTile(
-                          leading: Text(item.type),
-                          title: Text(item.price.toString()),
-                          trailing: Text(item.dateTime),
-                        ),
+                  future: listManage,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            final item = snapshot.data![index];
+                            return Card(
+                              child: ListTile(
+                                leading: Text(item.type),
+                                title: Text(item.price.toString()),
+                                trailing: Text(item.dateTime),
+                              ),
+                            );
+                          });
+                    } else {
+                      return Container(
+                        child: CircularProgressIndicator(),
                       );
-                    });}
-              ),
+                    }
+                  }),
             ),
           ]),
         ]),
@@ -117,41 +127,59 @@ class _overviewState extends State<overview> {
       ),
     );
   }
-}
 
-Widget appBar() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        '0000',
-        style: TextStyle(fontSize: 25),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(top: 4),
-        child: Text('Chi tiêu: -0000', style: TextStyle(fontSize: 15)),
-      ),
-      Text('Thu nhập: 0000', style: TextStyle(fontSize: 15)),
-    ],
-  );
-}
+  Widget appBar() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '0000',
+          style: TextStyle(fontSize: 25),
+        ),
+        FutureBuilder(
+            future: listSpend,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Text('Chi tiêu: - ${snapshot!.data}',
+                    style: TextStyle(fontSize: 15));
+              } else {
+                return Container(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }),
+        FutureBuilder(
+            future: dbHelper!.sumIncome(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Text('Thu nhập: ${snapshot.data}',
+                    style: TextStyle(fontSize: 15));
+              } else {
+                return Container(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }),
+      ],
+    );
+  }
 
-Widget listExpenditures(String type, String price, String date) {
-  return Container(
-    padding: EdgeInsets.only(top: 15),
-    child: Row(children: [
-      Container(
-        padding: EdgeInsets.only(right: 10),
-        child: Container(
-            width: 30,
-            height: 30,
-            decoration: BoxDecoration(
-                color: Colors.blue, borderRadius: BorderRadius.circular(50)),
-            child: Text(type)),
-      ),
-      Expanded(child: Text(price)),
-      Text(date)
-    ]),
-  );
+  Widget listExpenditures(String type, String price, String date) {
+    return Container(
+      padding: EdgeInsets.only(top: 15),
+      child: Row(children: [
+        Container(
+          padding: EdgeInsets.only(right: 10),
+          child: Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(50)),
+              child: Text(type)),
+        ),
+        Expanded(child: Text(price)),
+        Text(date)
+      ]),
+    );
+  }
 }
-

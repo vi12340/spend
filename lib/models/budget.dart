@@ -11,8 +11,11 @@ class budgetModel {
     return {'id': id, 'price': price, 'dateTime': dateTime};
   }
 
-  budgetModel.fromMap(Map<String, dynamic> res)
-      : id = res['id'],
-        price = res['price'],
-        dateTime = res['dateTime'];
+  factory budgetModel.fromMap(Map<String, dynamic> res) {
+    return budgetModel(
+        id : res['id'],
+        price : res['price'],
+        dateTime : res['dateTime']
+    );
+  }
 }

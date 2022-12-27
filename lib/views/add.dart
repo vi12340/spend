@@ -260,18 +260,11 @@ class _addState extends State<add> {
 
 
   Widget check() {
-    return
-
-      ElevatedButton(
+    return ElevatedButton(
             onPressed: (){
               dbHelper!.insertManage(manageModel(idCategory: 1, price: int.parse(text), type: select.toString(), dateTime: date, comment: ''));
-            },
-            //     () {
-            //   // print(text);
-            //   // print(date);
-            //   // print(controller.text);
-            //   // print(select);
-            // },
+              Navigator.pop(context);
+              },
             child: Icon(Icons.check),
     );
   }
