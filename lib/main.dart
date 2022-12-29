@@ -1,6 +1,7 @@
 import 'package:spend/models/budget.dart';
 import 'package:spend/models/category.dart';
 import 'package:spend/models/manage.dart';
+import 'package:spend/views/add.dart';
 import 'package:spend/views/category.dart';
 import 'package:spend/views/chart.dart';
 import 'package:spend/views/overview.dart';

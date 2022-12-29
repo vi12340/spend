@@ -43,17 +43,6 @@ class DbHelper {
     return queryResual.map((e) => categoryModel.fromMap(e)).toList();
   }
 
-  // Future<List<manageModel>> getManage() async{
-  //   var dbClient = await db;
-  //   List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT * FROM manage, category WHERE manage.idCategory = category.idCategory');
-  //   return queryResual.map((e) => manageModel.fromMap(e)).toList();
-  // }
-
-  // Future<List<manageModel>> getManage() async{
-  //   var dbClient = await db;
-  //   List<Map<String, dynamic>> queryResual = await dbClient!.query('manage');
-  //   return queryResual.map((e) => manageModel.fromMap(e)).toList() : [];
-  // }
 
   Future<List<manageModel>> getManage() async{
     var dbClient = await db;

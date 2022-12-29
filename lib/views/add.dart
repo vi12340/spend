@@ -16,6 +16,7 @@ class _addState extends State<add> {
   String text = '';
   String? opp;
   DbHelper? dbHelper;
+  late Future<List<manageModel>> listManage;
   final controller = TextEditingController();
   String date =
       '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}';
@@ -23,13 +24,12 @@ class _addState extends State<add> {
   List<String> items = ['Thu', 'Chi'];
   String? select;
 
-
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     dbHelper = DbHelper();
+    listManage = dbHelper!.getManage();
   }
 
   void btnButton(String btnText) {
@@ -258,13 +258,15 @@ class _addState extends State<add> {
     );
   }
 
-
   Widget check() {
     return ElevatedButton(
             onPressed: (){
-              dbHelper!.insertManage(manageModel(idCategory: 1, price: int.parse(text), type: select.toString(), dateTime: date, comment: ''));
-              Navigator.pop(context);
-              },
+              setState(() {
+                dbHelper!.insertManage(manageModel(idCategory: 1, price: int.parse(text), type: select.toString(), dateTime: date, comment: ''));
+                listManage = dbHelper!.getManage();
+                Navigator.pop(context);
+              });
+            },
             child: Icon(Icons.check),
     );
   }

@@ -40,34 +40,17 @@ class _bottomBudgetState extends State<bottomBudget> {
           ),
           TextButton(
               onPressed: () {
-                Navigator.pop(context);
                 dbHelper!.insertBudget(budgetModel(
                     price: int.parse(controller.text),
                     dateTime: DateFormat("yyyy-MM-dd hh:mm:ss")
                         .format(DateTime.now())));
+                setState(() {
+                  listBudget = dbHelper!.getBudget();
+                });
+                Navigator.pop(context);
               },
               child: const Text('Save')),
         ],
-
-        // Expanded(
-        //   child: FutureBuilder(
-        //       future: listBudget,
-        //       builder: (context, AsyncSnapshot<List<budgetModel>> snapshot){
-        //         return ListView.builder(
-        //             itemCount: snapshot.data?.length,
-        //             itemBuilder: (context, index){
-        //               return Container(
-        //                 child: Card(
-        //                   child: ListTile(
-        //                     leading: Text(snapshot.data![index].price.toString()),
-        //                     trailing: Text(snapshot.data![index].dateTime.toString()),
-        //                   ),
-        //                 ),
-        //               );
-        //             }
-        //         );
-        //       }),
-        // ),
       ),
     );
   }
