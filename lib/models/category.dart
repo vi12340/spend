@@ -6,7 +6,7 @@ class categoryModel {
   String icon;
   String color;
 
-  categoryModel({this.idCategory,required this.name, required this.icon, required this.color});
+  categoryModel({this.idCategory,required this.name,required this.icon, required this.color});
 
   Map<String, dynamic> toMap() {
     return {'idCategory': idCategory, 'name':name,'icon':icon, 'color': color};

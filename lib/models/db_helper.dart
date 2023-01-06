@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:spend/models/budget.dart';
 import 'package:spend/models/category.dart';
 import 'package:spend/models/manage.dart';
+import 'package:spend/models/manageCategory.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DbHelper {
@@ -27,8 +29,9 @@ class DbHelper {
   _onCreat(Database db, int version) async{
     
     await db.execute('CREATE TABLE budget(id INTEGER PRIMARY KEY AUTOINCREMENT, price INTEGER, dateTime TEXT)');
-    await db.execute('CREATE TABLE category(idCategory INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, icon TEXT, color TEXT)');
+    await db.execute('CREATE TABLE category(idCategory INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT,icon TEXT, color TEXT)');
     await db.execute('CREATE TABLE manage(id INTEGER PRIMARY KEY AUTOINCREMENT, idCategory INTEGER, price INTEGER, type TEXT,dateTime TEXT, comment TEXT, FOREIGN KEY (idCategory) REFERENCES category(idCategory))');
+
   }
 
   Future<List<budgetModel>> getBudget() async{
@@ -43,11 +46,16 @@ class DbHelper {
     return queryResual.map((e) => categoryModel.fromMap(e)).toList();
   }
 
-
   Future<List<manageModel>> getManage() async{
     var dbClient = await db;
-    List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT * FROM manage');
+    List<Map<String, dynamic>> queryResual = await dbClient!.query('manage');
     return queryResual.toList().map((e) => manageModel.fromMap(e)).toList();
+  }
+
+  Future<List<manageCategory>> getManageCategory() async{
+    var dbClient = await db;
+    List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT * FROM manage, category WHERE manage.idCategory = category.idCategory');
+    return queryResual.map((e) => manageCategory.fromMap(e)).toList();
   }
 
   Future<budgetModel> insertBudget(budgetModel budget) async{
@@ -75,7 +83,7 @@ class DbHelper {
 
   Future<int> updateCategory(categoryModel category) async{
     var dbClient = await db;
-    return await dbClient!.update('category', category.toMap(), where: 'id=?', whereArgs: [category.idCategory]);
+    return await dbClient!.update('category', category.toMap(), where: 'idCategory=?', whereArgs: [category.idCategory]);
   }
 
   Future<int> updateManage(manageModel manage) async{
@@ -90,7 +98,7 @@ class DbHelper {
 
   Future<int> deleteCategory(int idCategory) async{
     var dbClient = await db;
-    return await dbClient!.delete('category', where: 'id=?', whereArgs: [idCategory]);
+    return await dbClient!.delete('category', where: 'idCategory=?', whereArgs: [idCategory]);
   }
 
   Future<int> deleteManage(int id) async{
@@ -118,6 +126,7 @@ class DbHelper {
     var dbClient = await db ;
     return await dbClient!.rawQuery('SELECT SUM(price) FROM manage WHERE type = "Chi"');
   }
+
 
 }
 

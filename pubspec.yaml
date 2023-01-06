@@ -44,6 +44,8 @@ dependencies:
   path_provider: ^2.0.11
   intl: ^0.18.0
   flutter_slidable: ^2.0.0
+  string_to_hex: ^0.2.2
+  string_to_material_icon: ^0.0.1
 
 
 dev_dependencies:
@@ -69,9 +71,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - lib/assets/icons/
+#     - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

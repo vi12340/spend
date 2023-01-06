@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:spend/models/category.dart';
 import 'package:spend/models/db_helper.dart';
 import 'package:spend/views/categoryAdd.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:spend/views/icons.dart';
 
 class category extends StatefulWidget {
   const category({super.key});
@@ -15,6 +13,7 @@ class category extends StatefulWidget {
 class _categoryState extends State<category> {
   DbHelper? dbHelper;
   late Future<List<categoryModel>> listCategory;
+  final controller = TextEditingController();
 
   @override
   void initState() {
@@ -23,6 +22,7 @@ class _categoryState extends State<category> {
     dbHelper = DbHelper();
     listCategory = dbHelper!.getCategory();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,35 +31,88 @@ class _categoryState extends State<category> {
           centerTitle: true,
           actions: [
             IconButton(
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => categoryAdd() ));
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => categoryAdd()));
                 },
                 icon: Icon(Icons.edit_calendar_outlined))
           ],
         ),
         body: FutureBuilder(
           future: listCategory,
-          builder: (context, snapshot){
-            if(snapshot.hasData){
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
               return ListView.builder(
                   itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index){
+                  itemBuilder: (context, index) {
                     final item = snapshot.data![index];
-                    return Card(
-                      child: ListTile(
-                        title: Text(item.name),
+                    return Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Dismissible(
+                        direction: DismissDirection.endToStart,
+                        background: Container(
+                          width: 50,
+                          color: Colors.red,
+                        child: const Icon(Icons.delete_outline, color: Colors.white),),
+                        key: ValueKey<int>(snapshot.data!.length),
+                        confirmDismiss: (direction){
+                          return showDialog(context: context,
+                              builder: (contex){
+                            return AlertDialog(
+                              title: Text('Delete ?'),
+                              content: Text(item.name),
+                              actions: [
+                                TextButton(onPressed: (){
+                                  Navigator.pop(context);
+                                }, child: Text('Cancle')),
+                                TextButton(onPressed: (){
+                                  setState(() {
+                                    dbHelper!.deleteCategory(item.idCategory!);
+                                    snapshot.data!.remove(item.idCategory);
+                                    listCategory = dbHelper!.getCategory();
+                                    Navigator.pop(context);
+                                  });
+                                }, child: Text('Delete')),
+
+                              ],
+                            );
+                              });
+                        },
+
+                        child: Card(
+                          child: ListTile(
+                            leading: Container(
+                              width: 45,
+                              height: 45,
+                              decoration: BoxDecoration(
+                                  color: Color(int.parse(item.color)),
+                                  borderRadius: BorderRadius.circular(50)
+                              ),
+
+                              child: Center(
+                                child: SizedBox(
+                                  width: 35,
+                                  child: Image.asset(item.icon, color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            title: Text(item.name),
+                          ),
+                        ),
+
                       ),
                     );
-                  }
-              );
-            }else{
-              return CircularProgressIndicator();
+
+
+                  });
+            } else {
+              return Center(child: CircularProgressIndicator());
             }
           },
-        )
-    );
+        ));
   }
 }
+
 Widget CategoryLine(Icon icon, String name) {
   return Row(
     children: [

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:spend/main.dart';
 import 'package:spend/models/db_helper.dart';
 import 'package:spend/models/manage.dart';
-import 'package:intl/intl.dart';
+import 'package:string_to_hex/string_to_hex.dart';
+import '../models/category.dart';
 
 class add extends StatefulWidget {
   const add({super.key});
@@ -13,16 +15,20 @@ class add extends StatefulWidget {
 class _addState extends State<add> {
   int? first, second;
   String result = '';
-  String text = '';
+  String text = '0';
   String? opp;
   DbHelper? dbHelper;
   late Future<List<manageModel>> listManage;
+  late Future<List<categoryModel>> listCategory;
   final controller = TextEditingController();
   String date =
       '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}';
 
   List<String> items = ['Thu', 'Chi'];
   String? select;
+  String icon = 'lib/assets/icons/game.png';
+  String colors = '0xff7EA2E9';
+  late int idCategory;
 
   @override
   void initState() {
@@ -30,6 +36,7 @@ class _addState extends State<add> {
     super.initState();
     dbHelper = DbHelper();
     listManage = dbHelper!.getManage();
+    listCategory = dbHelper!.getCategory();
   }
 
   void btnButton(String btnText) {
@@ -67,8 +74,7 @@ class _addState extends State<add> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
+    return Column(
         children: [
           Container(
             height: 80,
@@ -79,130 +85,130 @@ class _addState extends State<add> {
           ),
           Padding(
             padding: const EdgeInsets.all(10),
-            child: Expanded(
-              child: Card(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10, top: 20),
-                      child: Row(
+             child: Column(
+               children: [
+                 Card(
+                    child: Padding(
+                      padding:  EdgeInsets.only(left:10, right: 10),
+                      child: Column(
                         children: [
-                          Expanded(
-                            child: Row(
-                              children: const [
-                                Icon(Icons.menu_book_outlined),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 20),
-                                  child: Expanded(child: Text('Thể loại')),
+                          Row(
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: const [
+                                      Icon(Icons.menu_book_outlined),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 20),
+                                        child: Expanded(child: Text('Thể loại')),
+                                      ),
+                                    ],
+                                  ),
                                 ),
+                                DropdownButton(
+                                    value: select,
+                                    onChanged: (value) {
+                                      select = value;
+                                    },
+                                    items: items.map((select) {
+                                      return DropdownMenuItem(
+                                          value: select, child: Text(select));
+                                    }).toList()),
                               ],
                             ),
-                          ),
-                          DropdownButton(
-                              value: select,
-                              onChanged: (value) {
-                                select = value;
-                              },
-                              items: items.map((select) {
-                                return DropdownMenuItem(
-                                    value: select, child: Text(select));
-                              }).toList()),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10, top: 20),
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: Row(
-                            children: const [
-                              Icon(Icons.date_range_outlined),
-                              Padding(
-                                padding: EdgeInsets.only(left: 20),
-                                child: Expanded(child: Text('Ngày Tháng')),
-                              ),
-                            ],
-                          )),
-                          Text(date),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10, top: 10),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.date_range_outlined),
-                          Container(
-                            width: 240,
-                            padding: const EdgeInsets.only(left: 20),
-                            child: TextField(
-                              controller: controller,
-                              decoration: const InputDecoration(
-                                  enabledBorder: InputBorder.none,
-                                  hintText: 'Ghi chú'),
+
+                             Row(
+                              children: [
+                                Expanded(
+                                    child: Row(
+                                  children: const [
+                                    Icon(Icons.date_range_outlined),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 20),
+                                      child: Expanded(child: Text('Ngày Tháng')),
+                                    ),
+                                  ],
+                                )),
+                                Text(date),
+                              ],
                             ),
-                          )
+
+
+                           Row(
+                              children: [
+                                const Icon(Icons.date_range_outlined),
+                                Container(
+                                  width: 240,
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: TextField(
+                                    controller: controller,
+                                    decoration: const InputDecoration(
+                                        enabledBorder: InputBorder.none,
+                                        hintText: 'Ghi chú'),
+                                  ),
+                                )
+                              ],
+                            ),
+
                         ],
                       ),
-                    )
-                  ],
-                ),
-              ),
-            ),
+                    ),
+                  ),
+                 Container(
+                   height: 120,
+                   padding: EdgeInsets.only(top: 50),
+                   child: Row(
+                     mainAxisAlignment: MainAxisAlignment.end,
+                     children: [
+
+                       check(),
+                     ],
+                   ),
+                 ),
+                  Column(
+                     children: [
+                       Row(
+                         children: [
+                           customOutLineButton('7'),
+                           customOutLineButton('8'),
+                           customOutLineButton('9'),
+                           customOutLineButton('+'),
+                         ],
+                       ),
+                       Row(
+                         children: [
+                           customOutLineButton('4'),
+                           customOutLineButton('5'),
+                           customOutLineButton('6'),
+                           customOutLineButton('-'),
+                         ],
+                       ),
+                       Row(
+                         children: [
+                           customOutLineButton('1'),
+                           customOutLineButton('2'),
+                           customOutLineButton('3'),
+                           customOutLineButton('X'),
+                         ],
+                       ),
+                       Row(
+                         children: [
+                           customOutLineButton('C'),
+                           customOutLineButton('0'),
+                           customOutLineButton('='),
+                           customOutLineButton('/'),
+                         ],
+                       )
+                     ],
+                   ),
+
+
+               ],
+             ),
+
           ),
-          Container(
-            height: 70,
-            padding: const EdgeInsets.only(top: 10, right: 20),
-            child: Row(
-              children: [
-                const Expanded(child: Text('')),
-                check(),
-              ],
-            ),
-          ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    customOutLineButton('7'),
-                    customOutLineButton('8'),
-                    customOutLineButton('9'),
-                    customOutLineButton('+'),
-                  ],
-                ),
-                Row(
-                  children: [
-                    customOutLineButton('4'),
-                    customOutLineButton('5'),
-                    customOutLineButton('6'),
-                    customOutLineButton('-'),
-                  ],
-                ),
-                Row(
-                  children: [
-                    customOutLineButton('1'),
-                    customOutLineButton('2'),
-                    customOutLineButton('3'),
-                    customOutLineButton('X'),
-                  ],
-                ),
-                Row(
-                  children: [
-                    customOutLineButton('C'),
-                    customOutLineButton('0'),
-                    customOutLineButton('='),
-                    customOutLineButton('/'),
-                  ],
-                )
-              ],
-            ),
-          )
         ],
-      ),
+      
     );
   }
 
@@ -230,13 +236,71 @@ class _addState extends State<add> {
         padding: const EdgeInsets.only(left: 25),
         child: Row(
           children: [
-            Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: Colors.purple),
-                child: const Icon(Icons.directions_bike_outlined)),
+            GestureDetector(
+              onTap: (){
+                showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(23), topRight: Radius.circular(23) )
+                  ),
+                    context: context,
+                    builder: (context){
+                      return Container(
+                        height: 200,
+                        child: FutureBuilder(
+                            future: listCategory,
+                            builder: (context, snapshot){
+                              if(snapshot.hasData){
+                                return ListView.builder(
+                                    itemCount: snapshot.data!.length,
+                                    itemBuilder: (contex, index){
+                                      final item = snapshot.data![index];
+                                      return Padding(
+                                        padding: const EdgeInsets.only(left: 15, right: 15, top: 4),
+                                        child:  Container(
+                                            height: 50,
+                                            child: GestureDetector(
+                                              onTap: (){
+                                                setState(() {
+                                                  icon = item.icon;
+                                                  colors = item.color;
+                                                  idCategory = item.idCategory!;
+                                                });
+                                                Navigator.pop(context);
+                                              },
+                                              child: Card(
+                                                child: ListTile(
+                                                  title: Text(item.name),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+
+                                      );
+                                    }
+                                );
+                              }else{
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            }),
+                      );
+                    });
+              },
+              child: Container(
+                  width: 45,
+                  height: 45,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: Color(int.parse(colors))),
+                  child: Center(
+                      child: SizedBox(
+                        width: 35,
+                          height: 35,
+                        child: Image.asset(icon, color: Colors.white),
+                      ))
+              ),
+            ),
           ],
         ));
   }
@@ -262,9 +326,10 @@ class _addState extends State<add> {
     return ElevatedButton(
             onPressed: (){
               setState(() {
-                dbHelper!.insertManage(manageModel(idCategory: 1, price: int.parse(text), type: select.toString(), dateTime: date, comment: ''));
+                dbHelper!.insertManage(manageModel(idCategory: idCategory, price: int.parse(text), type: select.toString(), dateTime: date, comment: ''));
                 listManage = dbHelper!.getManage();
-                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> MyApp()));
+
               });
             },
             child: Icon(Icons.check),

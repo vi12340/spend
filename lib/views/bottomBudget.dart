@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:spend/main.dart';
 import 'package:spend/models/budget.dart';
 import 'package:spend/models/db_helper.dart';
 import 'package:intl/intl.dart';
@@ -47,7 +48,7 @@ class _bottomBudgetState extends State<bottomBudget> {
                 setState(() {
                   listBudget = dbHelper!.getBudget();
                 });
-                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (contex)=> MyApp()));
               },
               child: const Text('Save')),
         ],
