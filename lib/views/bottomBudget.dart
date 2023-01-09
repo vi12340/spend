@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:spend/main.dart';
 import 'package:spend/models/budget.dart';
 import 'package:spend/models/db_helper.dart';
-import 'package:intl/intl.dart';
+
 
 class bottomBudget extends StatefulWidget {
   const bottomBudget({super.key});
@@ -16,6 +16,7 @@ class _bottomBudgetState extends State<bottomBudget> {
   DbHelper? dbHelper;
   late Future<List<budgetModel>> listBudget;
   final controller = TextEditingController();
+  String date = '${DateTime.now().year}-${DateTime.now().month}';
 
   @override
   void initState() {
@@ -43,8 +44,7 @@ class _bottomBudgetState extends State<bottomBudget> {
               onPressed: () {
                 dbHelper!.insertBudget(budgetModel(
                     price: int.parse(controller.text),
-                    dateTime: DateFormat("yyyy-MM-dd hh:mm:ss")
-                        .format(DateTime.now())));
+                    dateTime: date));
                 setState(() {
                   listBudget = dbHelper!.getBudget();
                 });

@@ -28,9 +28,9 @@ class DbHelper {
 
   _onCreat(Database db, int version) async{
     
-    await db.execute('CREATE TABLE budget(id INTEGER PRIMARY KEY AUTOINCREMENT, price INTEGER, dateTime TEXT)');
+    await db.execute('CREATE TABLE budget(id INTEGER PRIMARY KEY AUTOINCREMENT, price INTEGER, dateTime DATE)');
     await db.execute('CREATE TABLE category(idCategory INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT,icon TEXT, color TEXT)');
-    await db.execute('CREATE TABLE manage(id INTEGER PRIMARY KEY AUTOINCREMENT, idCategory INTEGER, price INTEGER, type TEXT,dateTime TEXT, comment TEXT, FOREIGN KEY (idCategory) REFERENCES category(idCategory))');
+    await db.execute('CREATE TABLE manage(id INTEGER PRIMARY KEY AUTOINCREMENT, idCategory INTEGER, price INTEGER, type TEXT,dateTime DATE, comment TEXT, FOREIGN KEY (idCategory) REFERENCES category(idCategory))');
 
   }
 
@@ -119,12 +119,12 @@ class DbHelper {
 
   Future sumIncome() async{
     var dbClient = await db;
-    return await dbClient!.rawQuery('SELECT SUM(price) FROM manage WHERE type = "Thu"');
+    return await dbClient!.rawQuery('SELECT SUM(price) FROM manage');
   }
 
   Future sumSpend() async{
     var dbClient = await db ;
-    return await dbClient!.rawQuery('SELECT SUM(price) FROM manage WHERE type = "Chi"');
+    return await dbClient!.rawQuery('SELECT SUM(price) FROM manage');
   }
 
 

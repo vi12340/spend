@@ -75,52 +75,52 @@ class _overviewState extends State<overview> {
                     future: dbHelper!.sumBudget(),
                     builder: (context, snapshot1) {
                       return FutureBuilder(
-                        future: dbHelper!.sumSpend(),
+                          future: dbHelper!.sumSpend(),
                           builder: (context, snapshot2){
-                          if(snapshot1.hasData && snapshot2.hasData){
-                            if(snapshot1.data[0]['SUM(price)'] != null && snapshot2.data[0]['SUM(price)'] != null){
-                              int a = snapshot1.data[0]['SUM(price)'];
-                              int b = snapshot2.data[0]['SUM(price)'];
-                              int c = a-b;
-                              return Padding(
-                                padding: EdgeInsets.only(top: 13),
-                                child: Text(
-                                  c.toString(),
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              );
-                            }else if(snapshot1.data[0]['SUM(price)'] == null && snapshot2.data[0]['SUM(price)'] != null){
-                              return  const Padding(
-                                padding: EdgeInsets.only(top: 13),
-                                child: Text(
-                                  '0',
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              );
-                            }else if(snapshot1.data[0]['SUM(price)'] != null && snapshot2.data[0]['SUM(price)'] == null){
-                              return Padding(
-                                padding: EdgeInsets.only(top: 13),
-                                child: Text(
-                                  '${snapshot1.data[0]['SUM(price)']}', style: TextStyle(fontSize: 20)
-                                ),
-                              );
-                            }
-                            else{
-                              return  const Padding(
-                                padding: EdgeInsets.only(top: 13),
-                                child: Text(
-                                  '0',
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              );
-                            }
-                          }else
-                            return CircularProgressIndicator();
+                            if(snapshot1.hasData && snapshot2.hasData){
+                              if(snapshot1.data[0]['SUM(price)'] != null && snapshot2.data[0]['SUM(price)'] != null){
+                                int a = snapshot1.data[0]['SUM(price)'];
+                                int b = snapshot2.data[0]['SUM(price)'];
+                                int c = a-b;
+                                return Padding(
+                                  padding: EdgeInsets.only(top: 13),
+                                  child: Text(
+                                    c.toString(),
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                );
+                              }else if(snapshot1.data[0]['SUM(price)'] == null && snapshot2.data[0]['SUM(price)'] != null){
+                                return  const Padding(
+                                  padding: EdgeInsets.only(top: 13),
+                                  child: Text(
+                                    '0',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                );
+                              }else if(snapshot1.data[0]['SUM(price)'] != null && snapshot2.data[0]['SUM(price)'] == null){
+                                return Padding(
+                                  padding: EdgeInsets.only(top: 13),
+                                  child: Text(
+                                      '${snapshot1.data[0]['SUM(price)']}', style: TextStyle(fontSize: 20)
+                                  ),
+                                );
+                              }
+                              else{
+                                return  const Padding(
+                                  padding: EdgeInsets.only(top: 13),
+                                  child: Text(
+                                    '0',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                );
+                              }
+                            }else
+                              return CircularProgressIndicator();
                           }
                       );
 
                     }
-                    )
+                )
               ],
             ),
             Container(
