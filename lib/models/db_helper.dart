@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:spend/models/budget.dart';
@@ -27,7 +26,6 @@ class DbHelper {
   }
 
   _onCreat(Database db, int version) async{
-    
     await db.execute('CREATE TABLE budget(id INTEGER PRIMARY KEY AUTOINCREMENT, price INTEGER, dateTime DATE)');
     await db.execute('CREATE TABLE category(idCategory INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT,icon TEXT, color TEXT)');
     await db.execute('CREATE TABLE manage(id INTEGER PRIMARY KEY AUTOINCREMENT, idCategory INTEGER, price INTEGER, type TEXT,dateTime DATE, comment TEXT, FOREIGN KEY (idCategory) REFERENCES category(idCategory))');
@@ -52,12 +50,6 @@ class DbHelper {
     return queryResual.toList().map((e) => manageModel.fromMap(e)).toList();
   }
 
-  Future<List<manageCategory>> getManageCategory() async{
-    var dbClient = await db;
-    List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT * FROM manage, category WHERE manage.idCategory = category.idCategory');
-    return queryResual.map((e) => manageCategory.fromMap(e)).toList();
-  }
-
   Future<budgetModel> insertBudget(budgetModel budget) async{
     var dbClient = await db;
     await dbClient!.insert('budget', budget.toMap());
@@ -76,26 +68,11 @@ class DbHelper {
     return manage;
   }
 
-  Future<int> updateBudget(budgetModel budget) async{
-    var dbClient = await db;
-    return await dbClient!.update('budget', budget.toMap(), where: 'id=?', whereArgs: [budget.id]);
-  }
-
-  Future<int> updateCategory(categoryModel category) async{
-    var dbClient = await db;
-    return await dbClient!.update('category', category.toMap(), where: 'idCategory=?', whereArgs: [category.idCategory]);
-  }
-
   Future<int> updateManage(manageModel manage) async{
     var dbClient = await db;
     return await dbClient!.update('manage', manage.toMap(), where: 'id=?', whereArgs: [manage.id] );
   }
   
-  Future<int> deleteBudget(int id) async{
-    var dbClient = await db;
-    return await dbClient!.delete('budget', where: 'id=?', whereArgs: [id] );
-  }
-
   Future<int> deleteCategory(int idCategory) async{
     var dbClient = await db;
     return await dbClient!.delete('category', where: 'idCategory=?', whereArgs: [idCategory]);
@@ -114,19 +91,36 @@ class DbHelper {
 
   Future sumBudget() async{
     var dbClient = await db;
-     return await dbClient!.rawQuery('SELECT SUM(price) FROM budget');
+     return await dbClient!.rawQuery('SELECT SUM(price) FROM budget WHERE strftime("%m",dateTime) = strftime("%m","now") AND strftime("%Y",dateTime) = strftime("%Y","now")');
   }
 
   Future sumIncome() async{
     var dbClient = await db;
-    return await dbClient!.rawQuery('SELECT SUM(price) FROM manage');
+    return await dbClient!.rawQuery('SELECT SUM(price) FROM manage WHERE type = "Thu" AND strftime("%m",dateTime) = strftime("%m","now") AND strftime("%Y",dateTime) = strftime("%Y","now")');
   }
 
   Future sumSpend() async{
     var dbClient = await db ;
-    return await dbClient!.rawQuery('SELECT SUM(price) FROM manage');
+    return await dbClient!.rawQuery('SELECT SUM(price) FROM manage WHERE type = "Chi" AND strftime("%m",dateTime) = strftime("%m","now") AND strftime("%Y",dateTime) = strftime("%Y","now")');
   }
 
+  Future<List<manageCategory>> getManageCategory() async{
+    var dbClient = await db;
+    List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT * from manage, category where manage.idCategory = category.idCategory ORDER BY dateTime DESC');
+    return queryResual.map((e) => manageCategory.fromMap(e)).toList();
+  }
+  
+  Future getSumInCome() async{
+    var dbClient = await db;
+    // List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT name, SUM(price) as price FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Thu" GROUP BY name');
+    // return queryResual.map((e) => sumName.fromMap(e)).toList();
+    return await dbClient!.rawQuery('SELECT name, SUM(price) FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Thu" GROUP BY name');
+  }
+
+  Future getSumSpend() async{
+    var dbClient = await db;
+    return await dbClient!.rawQuery('SELECT name, SUM(price) FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Chi" GROUP BY name');
+  }
 
 }
 

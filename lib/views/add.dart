@@ -245,10 +245,6 @@ class _addState extends State<add> {
             GestureDetector(
               onTap: () {
                 showModalBottomSheet(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(23),
-                            topRight: Radius.circular(23))),
                     context: context,
                     builder: (context) {
                       return Container(

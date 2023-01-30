@@ -46,7 +46,7 @@ dependencies:
   flutter_slidable: ^2.0.0
   string_to_hex: ^0.2.2
   string_to_material_icon: ^0.0.1
-
+  animated_button_bar: ^0.0.2+1
 
 dev_dependencies:
   flutter_test:
