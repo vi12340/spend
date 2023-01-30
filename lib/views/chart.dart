@@ -79,12 +79,12 @@ class _chartState extends State<chart> {
                         if (snapshot.hasData) {
                          Map<String, double> dataMap ={};
                           for (int i = 0; i<= snapshot.data!.length; i++){
-                            String name = snapshot.data![i].name;
-                            double price = snapshot.data![i].price;
+                            String name = snapshot.data![i]['name'];
+                            double price = snapshot.data![i]['SUM(price)'].toDouble();
                             Map<String, double> data = {name:price};
                             dataMap.addAll(data);
                           }
-                          return PieChart(dataMap: dataMap);
+                         return PieChart(dataMap: dataMap);
                         }
                         else {
                           return Center(

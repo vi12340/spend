@@ -111,11 +111,11 @@ class DbHelper {
     return queryResual.map((e) => manageCategory.fromMap(e)).toList();
   }
   
-  Future<List<sumName>> getSumInCome() async{
+  Future getSumInCome() async{
     var dbClient = await db;
-    List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT name, SUM(price) as price FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Thu" GROUP BY name');
-    return queryResual.map((e) => sumName.fromMap(e)).toList();
-   // return await dbClient!.rawQuery('SELECT name, SUM(price) FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Thu" GROUP BY name');
+    // List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT name, SUM(price) as price FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Thu" GROUP BY name');
+    // return queryResual.map((e) => sumName.fromMap(e)).toList();
+    return await dbClient!.rawQuery('SELECT name, SUM(price) FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Thu" GROUP BY name');
   }
 
   Future getSumSpend() async{
