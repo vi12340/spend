@@ -6,6 +6,7 @@ import 'package:spend/models/budget.dart';
 import 'package:spend/models/category.dart';
 import 'package:spend/models/manage.dart';
 import 'package:spend/models/manageCategory.dart';
+import 'package:spend/models/sumName.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DbHelper {
@@ -72,7 +73,7 @@ class DbHelper {
     var dbClient = await db;
     return await dbClient!.update('manage', manage.toMap(), where: 'id=?', whereArgs: [manage.id] );
   }
-  
+
   Future<int> deleteCategory(int idCategory) async{
     var dbClient = await db;
     return await dbClient!.delete('category', where: 'idCategory=?', whereArgs: [idCategory]);
@@ -110,11 +111,11 @@ class DbHelper {
     return queryResual.map((e) => manageCategory.fromMap(e)).toList();
   }
   
-  Future getSumInCome() async{
+  Future<List<sumName>> getSumInCome() async{
     var dbClient = await db;
-    // List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT name, SUM(price) as price FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Thu" GROUP BY name');
-    // return queryResual.map((e) => sumName.fromMap(e)).toList();
-    return await dbClient!.rawQuery('SELECT name, SUM(price) FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Thu" GROUP BY name');
+    List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT name, SUM(price) as price FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Thu" GROUP BY name');
+    return queryResual.map((e) => sumName.fromMap(e)).toList();
+   // return await dbClient!.rawQuery('SELECT name, SUM(price) FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Thu" GROUP BY name');
   }
 
   Future getSumSpend() async{

@@ -17,14 +17,12 @@ class _chartState extends State<chart> {
   bool _opacity1 = true;
   bool _opacity2 = true;
 
-  // late Future<List<sumName>> listSumName;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     dbHelper = DbHelper();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -77,12 +75,16 @@ class _chartState extends State<chart> {
                   padding: const EdgeInsets.all(30),
                   child: FutureBuilder(
                       future: dbHelper!.getSumInCome(),
-                      builder: (context, snapShot) {
-                        if (snapShot.hasData) {
-
-                          return Text('');
-
-
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                         Map<String, double> dataMap ={};
+                          for (int i = 0; i<= snapshot.data!.length; i++){
+                            String name = snapshot.data![i].name;
+                            double price = snapshot.data![i].price;
+                            Map<String, double> data = {name:price};
+                            dataMap.addAll(data);
+                          }
+                          return PieChart(dataMap: dataMap);
                         }
                         else {
                           return Center(
@@ -100,8 +102,6 @@ class _chartState extends State<chart> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return Container(
-                          height: 300,
-
                         );
                       } else {
                         return Center(child: CircularProgressIndicator());

@@ -26,7 +26,7 @@ class _addState extends State<add> {
   String? select;
   String icon = 'lib/assets/icons/game.png';
   String colors = '0xff7EA2E9';
-  late int idCategory;
+  int idCategory = 1;
 
   Future _date(context) async {
     DateTime? picker = await showDatePicker(
