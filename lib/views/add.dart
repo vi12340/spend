@@ -24,8 +24,8 @@ class _addState extends State<add> {
   DateTime date = DateTime.now();
   List<String> items = ['Thu', 'Chi'];
   String? select;
-  String icon = 'lib/assets/icons/game.png';
-  String colors = '0xff7EA2E9';
+  String icon = 'lib/assets/icons/tax.png';
+  String colors = '0xffFDE683';
   int idCategory = 1;
 
   Future _date(context) async {
@@ -331,7 +331,7 @@ class _addState extends State<add> {
               idCategory: idCategory,
               price: int.parse(text),
               type: select.toString(),
-              dateTime: DateFormat("yyyy-MM-dd").format(date),
+              dateTime: DateFormat("yyyy-MM-dd hh:mm:ss").format(date),
               comment: ''));
           listManage = dbHelper!.getManage();
           Navigator.push(

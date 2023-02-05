@@ -538,9 +538,7 @@ class _overviewState extends State<overview> {
                     ),
                   );
                 } else {
-                  return Container(
-                    child: CircularProgressIndicator(),
-                  );
+                  return Center(child: CircularProgressIndicator());
                 }
               });
   }}

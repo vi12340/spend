@@ -92,17 +92,28 @@ class _chartState extends State<chart> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               Map<String, double> dataMap ={};
-              for (int i = 0; i< snapshot.data!.length; i++){
-                String name = snapshot.data![i]['name'];
-                double price = snapshot.data![i]['SUM(price)'].toDouble();
-                Map<String, double> data = {name:price};
-                dataMap.addAll(data);
-              }
               List<Color> color = [];
-              for(int i = 0; i< snapshot.data.length; i++){
-                List<Color> inColor = [Color(int.parse(snapshot.data[i]['color']))];
+              if(snapshot.data.length > 0){
+                for (int i = 0; i< snapshot.data!.length; i++){
+                  String name = snapshot.data![i]['name'];
+                  double price = snapshot.data![i]['SUM(price)'].toDouble();
+
+                  Map<String, double> data = {name:price};
+                  dataMap.addAll(data);
+
+                  List<Color> inColor = [Color(int.parse(snapshot.data[i]['color']))];
+                  color.addAll(inColor);
+
+                }
+              }
+              else{
+                Map<String, double> data = {'Income':100};
+                dataMap.addAll(data);
+
+                List<Color> inColor = [Colors.green];
                 color.addAll(inColor);
               }
+
               return Column(
                 children: [
                   PieChart(
@@ -163,17 +174,29 @@ class _chartState extends State<chart> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               Map<String, double> dataMap ={};
-              for (int i = 0; i< snapshot.data!.length; i++){
-                String name = snapshot.data![i]['name'];
-                double price = snapshot.data![i]['SUM(price)'].toDouble();
-                Map<String, double> data = {name:price};
-                dataMap.addAll(data);
-              }
               List<Color> color = [];
-              for(int i = 0; i< snapshot.data.length; i++){
-                List<Color> inColor = [Color(int.parse(snapshot.data[i]['color']))];
+
+              if(snapshot.data.length > 0){
+                for (int i = 0; i< snapshot.data!.length; i++){
+                  String name = snapshot.data![i]['name'];
+                  double price = snapshot.data![i]['SUM(price)'].toDouble();
+
+                  Map<String, double> data = {name:price};
+                  dataMap.addAll(data);
+
+                  List<Color> inColor = [Color(int.parse(snapshot.data[i]['color']))];
+                  color.addAll(inColor);
+
+                }
+              }
+              else{
+                Map<String, double> data = {'Spend':1};
+                dataMap.addAll(data);
+
+                List<Color> inColor = [Colors.red];
                 color.addAll(inColor);
               }
+
               return Column(
                 children: [
                   PieChart(
@@ -183,6 +206,7 @@ class _chartState extends State<chart> {
                         showChartValuesInPercentage: true
                     ),
                   ),
+
                   Container(
                     height: 175,
                     padding: EdgeInsets.only(top: 20),

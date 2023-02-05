@@ -29,7 +29,26 @@ class DbHelper {
     await db.execute('CREATE TABLE budget(id INTEGER PRIMARY KEY AUTOINCREMENT, price INTEGER, dateTime DATE)');
     await db.execute('CREATE TABLE category(idCategory INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT,icon TEXT, color TEXT)');
     await db.execute('CREATE TABLE manage(id INTEGER PRIMARY KEY AUTOINCREMENT, idCategory INTEGER, price INTEGER, type TEXT,dateTime DATE, comment TEXT, FOREIGN KEY (idCategory) REFERENCES category(idCategory))');
-
+    await db.transaction((txn) async {
+      int idCategory1 = await txn.rawInsert(
+          'INSERT INTO category(name, icon, color) VALUES("Tổng hợp","lib/assets/icons/tax.png","0xffFDE683")');
+      int idCategory2 = await txn.rawInsert(
+          'INSERT INTO category(name, icon, color) VALUES("Game","lib/assets/icons/game.png","0xff7EA2E9")');
+      int idCategory3 = await txn.rawInsert(
+          'INSERT INTO category(name, icon, color) VALUES("Làm đẹp","lib/assets/icons/lipstick.png","0xffFA6899")');
+      int idCategory4 = await txn.rawInsert(
+          'INSERT INTO category(name, icon, color) VALUES("Lương","lib/assets/icons/bank.png","0xff9FC663")');
+      int idCategory5 = await txn.rawInsert(
+          'INSERT INTO category(name, icon, color) VALUES("Vé xe bus","lib/assets/icons/bus.png","0xffABCEEE")');
+      int idCategory6 = await txn.rawInsert(
+          'INSERT INTO category(name, icon, color) VALUES("Sách","lib/assets/icons/book.png","0xffFE9539")');
+      int idCategory7 = await txn.rawInsert(
+          'INSERT INTO category(name, icon, color) VALUES("Vé máy bay","lib/assets/icons/fly.png","0xff61AEC2")');
+      int idCategory8 = await txn.rawInsert(
+          'INSERT INTO category(name, icon, color) VALUES("Hoa quả","lib/assets/icons/apple.png","0xffE94345")');
+      int idCategory9 = await txn.rawInsert(
+          'INSERT INTO category(name, icon, color) VALUES("Thể thao","lib/assets/icons/sport.png","0xffDBD369")');
+    });
   }
 
   Future<List<budgetModel>> getBudget() async{
@@ -126,13 +145,13 @@ class DbHelper {
   
   Future sumIncomeMonth() async{
     var dbClient = await db;
-    return await dbClient!.rawQuery('SELECT strftime("%m", dateTime) as month, SUM(price) FROM manage WHERE type = "Thu" AND strftime("%Y", dateTime) = strftime("%Y", "now") GROUP BY dateTime');
+    return await dbClient!.rawQuery('SELECT strftime("%m", dateTime) as month, SUM(price) FROM manage WHERE type = "Thu" AND strftime("%Y", dateTime) = strftime("%Y", "now") ORDER by dateTime');
   }
 
 
   Future sumSpendMonth() async{
     var dbClient = await db;
-    return await dbClient!.rawQuery('SELECT strftime("%m", dateTime) as month, SUM(price) FROM manage WHERE type = "Chi" AND strftime("%Y", dateTime) = strftime("%Y", "now") GROUP BY dateTime');
+    return await dbClient!.rawQuery('SELECT strftime("%m", dateTime) as month, SUM(price) FROM manage WHERE type = "Chi" AND strftime("%Y", dateTime) = strftime("%Y", "now") ORDER by dateTime');
   }
 
 
