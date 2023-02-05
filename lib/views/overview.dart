@@ -41,96 +41,97 @@ class _overviewState extends State<overview> {
       ),
       body: Container(
         padding: EdgeInsets.all(20),
-        child: ListView(children: [
-          Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: GestureDetector(
-                    onTap: (() {
-                      setState(() {
-                        showModalBottomSheet(
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30))),
-                            context: context,
-                            builder: (context) {
-                              return Padding(
-                                padding: MediaQuery.of(context).viewInsets,
-                                child: Container(
-                                  height: 100,
-                                  child: bottomBudget(),
-                                ),
-                              );
-                            });
-                      });
-                    }),
-                    child: const SizedBox(
-                        child: Text('Đặt ngân sách',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold))),
+        child: SingleChildScrollView(
+          child: Column(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: GestureDetector(
+                      onTap: (() {
+                        setState(() {
+                          showModalBottomSheet(
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30),
+                                      topRight: Radius.circular(30))),
+                              context: context,
+                              builder: (context) {
+                                return Padding(
+                                  padding: MediaQuery.of(context).viewInsets,
+                                  child: Container(
+                                    height: 100,
+                                    child: bottomBudget(),
+                                  ),
+                                );
+                              });
+                        });
+                      }),
+                      child: const SizedBox(
+                          child: Text('Đặt ngân sách',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold))),
+                    ),
                   ),
-                ),
-                FutureBuilder(
-                    future: dbHelper!.sumBudget(),
-                    builder: (context, snapshot1) {
-                      return FutureBuilder(
-                          future: dbHelper!.sumSpend(),
-                          builder: (context, snapshot2){
-                            if(snapshot1.hasData && snapshot2.hasData){
-                              if(snapshot1.data[0]['SUM(price)'] != null && snapshot2.data[0]['SUM(price)'] != null){
-                                int a = snapshot1.data[0]['SUM(price)'];
-                                int b = snapshot2.data[0]['SUM(price)'];
-                                int c = a-b;
-                                return Padding(
-                                  padding: EdgeInsets.only(top: 13),
-                                  child: Text(
-                                    c.toString(),
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                );
-                              }else if(snapshot1.data[0]['SUM(price)'] == null && snapshot2.data[0]['SUM(price)'] != null){
-                                return  const Padding(
-                                  padding: EdgeInsets.only(top: 13),
-                                  child: Text(
-                                    '0',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                );
-                              }else if(snapshot1.data[0]['SUM(price)'] != null && snapshot2.data[0]['SUM(price)'] == null){
-                                return Padding(
-                                  padding: EdgeInsets.only(top: 13),
-                                  child: Text(
-                                      '${snapshot1.data[0]['SUM(price)']}', style: TextStyle(fontSize: 20)
-                                  ),
-                                );
-                              }
-                              else{
-                                return  const Padding(
-                                  padding: EdgeInsets.only(top: 13),
-                                  child: Text(
-                                    '0',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                );
-                              }
-                            }else
-                              return CircularProgressIndicator();
-                          }
-                      );
+                  FutureBuilder(
+                      future: dbHelper!.sumBudget(),
+                      builder: (context, snapshot1) {
+                        return FutureBuilder(
+                            future: dbHelper!.sumSpend(),
+                            builder: (context, snapshot2){
+                              if(snapshot1.hasData && snapshot2.hasData){
+                                if(snapshot1.data[0]['SUM(price)'] != null && snapshot2.data[0]['SUM(price)'] != null){
+                                  int a = snapshot1.data[0]['SUM(price)'];
+                                  int b = snapshot2.data[0]['SUM(price)'];
+                                  int c = a-b;
+                                  return Padding(
+                                    padding: EdgeInsets.only(top: 13),
+                                    child: Text(
+                                      c.toString(),
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                  );
+                                }else if(snapshot1.data[0]['SUM(price)'] == null && snapshot2.data[0]['SUM(price)'] != null){
+                                  return  const Padding(
+                                    padding: EdgeInsets.only(top: 13),
+                                    child: Text(
+                                      '0',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                  );
+                                }else if(snapshot1.data[0]['SUM(price)'] != null && snapshot2.data[0]['SUM(price)'] == null){
+                                  return Padding(
+                                    padding: EdgeInsets.only(top: 13),
+                                    child: Text(
+                                        '${snapshot1.data[0]['SUM(price)']}', style: TextStyle(fontSize: 20)
+                                    ),
+                                  );
+                                }
+                                else{
+                                  return  const Padding(
+                                    padding: EdgeInsets.only(top: 13),
+                                    child: Text(
+                                      '0',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                  );
+                                }
+                              }else
+                                return CircularProgressIndicator();
+                            }
+                        );
 
-                    }
-                )
-              ],
-            ),
-            Container(
-                height: 580, padding: EdgeInsets.only(top: 20),
-                child:  list()),
-          ]),
-        ]),
+                      }
+                  )
+                ],
+              ),
+              Container(
+                  height: 500,
+                  padding: EdgeInsets.only(top: 20),
+                  child:  list()),
+            ]),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

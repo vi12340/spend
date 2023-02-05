@@ -6,7 +6,6 @@ import 'package:spend/models/budget.dart';
 import 'package:spend/models/category.dart';
 import 'package:spend/models/manage.dart';
 import 'package:spend/models/manageCategory.dart';
-import 'package:spend/models/sumName.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DbHelper {
@@ -107,7 +106,7 @@ class DbHelper {
 
   Future<List<manageCategory>> getManageCategory() async{
     var dbClient = await db;
-    List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT * from manage, category where manage.idCategory = category.idCategory ORDER BY dateTime DESC');
+    List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT * from manage, category where manage.idCategory = category.idCategory AND strftime("%m",dateTime) = strftime("%m","now") ORDER BY dateTime DESC');
     return queryResual.map((e) => manageCategory.fromMap(e)).toList();
   }
   
@@ -115,13 +114,28 @@ class DbHelper {
     var dbClient = await db;
     // List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT name, SUM(price) as price FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Thu" GROUP BY name');
     // return queryResual.map((e) => sumName.fromMap(e)).toList();
-    return await dbClient!.rawQuery('SELECT name, SUM(price) FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Thu" GROUP BY name');
+    return await dbClient!.rawQuery('SELECT name, SUM(price), icon, color FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Thu" AND strftime("%m",dateTime) = strftime("%m","now") GROUP BY name');
   }
 
   Future getSumSpend() async{
     var dbClient = await db;
-    return await dbClient!.rawQuery('SELECT name, SUM(price) FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Chi" GROUP BY name');
+    // List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT name, SUM(price) as price FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Chi" GROUP BY name');
+    // return queryResual.map((e) => sumName.fromMap(e)).toList();
+   return await dbClient!.rawQuery('SELECT name, SUM(price), icon, color FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Chi" AND strftime("%m",dateTime) = strftime("%m","now") GROUP BY name');
   }
+  
+  Future sumIncomeMonth() async{
+    var dbClient = await db;
+    return await dbClient!.rawQuery('SELECT strftime("%m", dateTime) as month, SUM(price) FROM manage WHERE type = "Thu" AND strftime("%Y", dateTime) = strftime("%Y", "now") GROUP BY dateTime');
+  }
+
+
+  Future sumSpendMonth() async{
+    var dbClient = await db;
+    return await dbClient!.rawQuery('SELECT strftime("%m", dateTime) as month, SUM(price) FROM manage WHERE type = "Chi" AND strftime("%Y", dateTime) = strftime("%Y", "now") GROUP BY dateTime');
+  }
+
+
 
 }
 

@@ -15,7 +15,7 @@ class chart extends StatefulWidget {
 class _chartState extends State<chart> {
   DbHelper? dbHelper;
   bool _opacity1 = true;
-  bool _opacity2 = true;
+  bool _opacity2 = false;
 
   @override
   void initState() {
@@ -39,79 +39,192 @@ class _chartState extends State<chart> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Center(
-              child: Container(
-                width: 180,
-                child: AnimatedButtonBar(
-                    radius: 25,
-                    borderColor: Colors.white,
-                    borderWidth: 2,
-                    innerVerticalPadding: 15,
-                    children: [
-                      ButtonBarEntry(
-                          child: Text('Thu nhập'),
-                          onTap: () {
-                            setState(() {
-                              _opacity1 = true;
-                              _opacity2 = false;
-                            });
-                          }),
-                      ButtonBarEntry(
-                          child: Text('Chi tiêu'),
-                          onTap: () {
-                            setState(() {
-                              _opacity2 = true;
-                              _opacity1 = false;
-                            });
-                          })
-                    ]),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Center(
+                child: Container(
+                  width: 180,
+                  child:
+                  AnimatedButtonBar(
+                      radius: 25,
+                      borderColor: Colors.white,
+                      borderWidth: 2,
+                      innerVerticalPadding: 15,
+                      children: [
+                        ButtonBarEntry(
+                            child: Text('Thu nhập'),
+                            onTap: () {
+                              setState(() {
+                                _opacity1 = true;
+                                _opacity2 = false;
+                              });
+                            }),
+                        ButtonBarEntry(
+                            child: Text('Chi tiêu'),
+                            onTap: () {
+                              setState(() {
+                                _opacity2 = true;
+                                _opacity1 = false;
+                              });
+                            })
+                      ]),
+                ),
               ),
-            ),
-            Visibility(
-                visible: _opacity1,
-                child: Padding(
-                  padding: const EdgeInsets.all(30),
-                  child: FutureBuilder(
-                      future: dbHelper!.getSumInCome(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                         Map<String, double> dataMap ={};
-                          for (int i = 0; i<= snapshot.data!.length; i++){
-                            String name = snapshot.data![i]['name'];
-                            double price = snapshot.data![i]['SUM(price)'].toDouble();
-                            Map<String, double> data = {name:price};
-                            dataMap.addAll(data);
-                          }
-                         return PieChart(dataMap: dataMap);
-                        }
-                        else {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                      }),
-                )),
-            Visibility(
-                visible: _opacity2,
-                child: Padding(
-                  padding: const EdgeInsets.all(30),
-                  child: FutureBuilder(
-                    future: dbHelper!.getSumSpend(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Container(
-                        );
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    },
-                  ),
-                ))
-          ],
+              Visibility(
+                  visible: _opacity1,
+                  child: inCome()),
+
+              Visibility(
+                  visible: _opacity2,
+                  child: spend())
+            ],
+          ),
         ),
       ),
     );
   }
+  Widget inCome(){
+    return Padding(
+      padding: const EdgeInsets.all(30),
+      child: FutureBuilder(
+          future: dbHelper!.getSumInCome(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              Map<String, double> dataMap ={};
+              for (int i = 0; i< snapshot.data!.length; i++){
+                String name = snapshot.data![i]['name'];
+                double price = snapshot.data![i]['SUM(price)'].toDouble();
+                Map<String, double> data = {name:price};
+                dataMap.addAll(data);
+              }
+              List<Color> color = [];
+              for(int i = 0; i< snapshot.data.length; i++){
+                List<Color> inColor = [Color(int.parse(snapshot.data[i]['color']))];
+                color.addAll(inColor);
+              }
+              return Column(
+                children: [
+                  PieChart(
+                    dataMap: dataMap,
+                    colorList: color,
+                    chartValuesOptions: ChartValuesOptions(
+                        showChartValuesInPercentage: true
+                    ),
+                  ),
+                  Container(
+                    height: 175,
+                    padding: EdgeInsets.only(top: 20),
+                    child: FutureBuilder(
+                      future: dbHelper!.getSumInCome(),
+                      builder: (context, index){
+                        return ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index){
+                              return Card(
+                                child: ListTile(
+                                  leading: Container(
+                                    width: 35,
+                                    height: 35,
+                                    decoration: BoxDecoration(
+                                        color: Color(int.parse(snapshot.data[index]['color'])),
+                                        borderRadius: BorderRadius.circular(50)
+                                    ),
+                                    child: Center(
+                                      child: SizedBox(
+                                          width: 25,
+                                          child: Image.asset(snapshot.data[index]['icon'], color: Colors.white)),
+                                    ),
+                                  ),
+                                  title: Text(snapshot.data[index]['name']),
+                                  trailing: Text(snapshot.data[index]['SUM(price)'].toString()),
+                                ),
+                              );
+                            });
+                      },
+                    ),
+                  )
+                ],
+              );
+            }
+            else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          }),
+    );
+  }
+  Widget spend(){
+    return Padding(
+      padding: const EdgeInsets.all(30),
+      child: FutureBuilder(
+          future: dbHelper!.getSumSpend(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              Map<String, double> dataMap ={};
+              for (int i = 0; i< snapshot.data!.length; i++){
+                String name = snapshot.data![i]['name'];
+                double price = snapshot.data![i]['SUM(price)'].toDouble();
+                Map<String, double> data = {name:price};
+                dataMap.addAll(data);
+              }
+              List<Color> color = [];
+              for(int i = 0; i< snapshot.data.length; i++){
+                List<Color> inColor = [Color(int.parse(snapshot.data[i]['color']))];
+                color.addAll(inColor);
+              }
+              return Column(
+                children: [
+                  PieChart(
+                    dataMap: dataMap,
+                    colorList: color,
+                    chartValuesOptions: ChartValuesOptions(
+                        showChartValuesInPercentage: true
+                    ),
+                  ),
+                  Container(
+                    height: 175,
+                    padding: EdgeInsets.only(top: 20),
+                    child: FutureBuilder(
+                      future: dbHelper!.getSumSpend(),
+                      builder: (context, index){
+                        return ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index){
+                              return Card(
+                                child: ListTile(
+                                  leading: Container(
+                                    width: 35,
+                                    height: 35,
+                                    decoration: BoxDecoration(
+                                        color: Color(int.parse(snapshot.data[index]['color'])),
+                                        borderRadius: BorderRadius.circular(50)
+                                    ),
+                                    child: Center(
+                                      child: SizedBox(
+                                          width: 25,
+                                          child: Image.asset(snapshot.data[index]['icon'], color: Colors.white)),
+                                    ),
+                                  ),
+                                  title: Text(snapshot.data[index]['name']),
+                                  trailing: Text(snapshot.data[index]['SUM(price)'].toString()),
+                                ),
+                              );
+                            });
+                      },
+                    ),
+                  )
+                ],
+              );
+            }
+            else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          }),
+    );
+  }
+
 }
