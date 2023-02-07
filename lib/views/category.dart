@@ -59,20 +59,19 @@ class _categoryState extends State<category> {
                           return showDialog(context: context,
                               builder: (contex){
                             return AlertDialog(
-                              title: Text('Delete ?'),
-                              content: Text(item.name),
+                              title: Text('Bạn chắc chắn muốn xoá ${item.name}?'),
                               actions: [
                                 TextButton(onPressed: (){
                                   Navigator.pop(context);
-                                }, child: Text('Cancle')),
+                                }, child: Text('CANCLE')),
                                 TextButton(onPressed: (){
                                   setState(() {
                                     dbHelper!.deleteCategory(item.idCategory!);
                                     snapshot.data!.remove(item.idCategory);
                                     listCategory = dbHelper!.getCategory();
-                                    Navigator.pop(context);
                                   });
-                                }, child: Text('Delete')),
+                                  Navigator.pop(context);
+                                }, child: Text('DELETE')),
 
                               ],
                             );

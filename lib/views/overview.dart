@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:spend/config/textStyle.dart';
 import 'package:spend/models/db_helper.dart';
 import 'package:spend/models/manage.dart';
 import 'package:spend/views/add.dart';
@@ -321,12 +322,28 @@ class _overviewState extends State<overview> {
                                         motion: DrawerMotion(),
                                         children: [
                                           SlidableAction(onPressed: (value){
-                                            setState(() {
-                                              dbHelper!.deleteManage(item.id!);
-                                              snapshot.data!.remove(item.id);
-                                              snapshot.data!.remove(item.idCategory);
-                                              listManageCategory = dbHelper!.getManageCategory();
-                                            });
+                                            showDialog(
+                                                context: context,
+                                                builder: (context){
+                                                  return AlertDialog(
+                                                    title: Text('Bạn chắc chắn muốn xoá ${item.name}?', style: addtextStyle.textstyleOverView ),
+                                                    actions: [
+                                                      TextButton(
+                                                          onPressed: (){
+                                                            Navigator.pop(context);
+                                                          }, child: Text('CANCLE')),
+                                                      TextButton(
+                                                          onPressed: (){
+                                                            setState(() {
+                                                              dbHelper!.deleteManage(item.id!);
+                                                              snapshot.data!.remove(item.id);
+                                                              listManageCategory = dbHelper!.getManageCategory();
+                                                            });
+                                                            Navigator.pop(context);
+                                                          }, child: Text('DELETE')),
+                                                    ],
+                                                  );
+                                                });
                                           },
                                             backgroundColor: Colors.red,
                                             icon: Icons.delete,
@@ -467,12 +484,32 @@ class _overviewState extends State<overview> {
                                       endActionPane: ActionPane(
                                         motion: DrawerMotion(),
                                         children: [
-                                          SlidableAction(onPressed: (value){
-                                            setState(() {
-                                              dbHelper!.deleteManage(item.id!);
-                                              snapshot.data!.remove(item.id);
-                                              listManageCategory = dbHelper!.getManageCategory();
-                                            });
+                                          SlidableAction(
+                                            onPressed: (value){
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context){
+                                                    return AlertDialog(
+                                                      title: Text('Bạn chắc chắn muốn xoá ${item.name}?', style: addtextStyle.textstyleOverView ),
+                                                      actions: [
+                                                        TextButton(
+                                                            onPressed: (){
+                                                              Navigator.pop(context);
+                                                            }, child: Text('CANCLE')),
+                                                        TextButton(
+                                                            onPressed: (){
+                                                            setState(() {
+                                                              dbHelper!.deleteManage(item.id!);
+                                                              snapshot.data!.remove(item.id);
+                                                              listManageCategory = dbHelper!.getManageCategory();
+                                                              });
+                                                            Navigator.pop(context);
+                                                            }, child: Text('DELETE')),
+                                                      ],
+                                                    );
+                                                  });
+
+
                                           },
                                             backgroundColor: Colors.red,
                                             icon: Icons.delete,
