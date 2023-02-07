@@ -26,7 +26,7 @@ class DbHelper {
   }
 
   _onCreat(Database db, int version) async{
-    await db.execute('CREATE TABLE budget(id INTEGER PRIMARY KEY AUTOINCREMENT, price INTEGER, dateTime DATE)');
+    await db.execute('CREATE TABLE budget(id INTEGER PRIMARY KEY AUTOINCREMENT, price INTEGER, dateTime TEXT)');
     await db.execute('CREATE TABLE category(idCategory INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT,icon TEXT, color TEXT)');
     await db.execute('CREATE TABLE manage(id INTEGER PRIMARY KEY AUTOINCREMENT, idCategory INTEGER, price INTEGER, type TEXT,dateTime DATE, comment TEXT, FOREIGN KEY (idCategory) REFERENCES category(idCategory))');
     await db.transaction((txn) async {
@@ -131,27 +131,23 @@ class DbHelper {
   
   Future getSumInCome() async{
     var dbClient = await db;
-    // List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT name, SUM(price) as price FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Thu" GROUP BY name');
-    // return queryResual.map((e) => sumName.fromMap(e)).toList();
     return await dbClient!.rawQuery('SELECT name, SUM(price), icon, color FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Thu" AND strftime("%m",dateTime) = strftime("%m","now") GROUP BY name');
   }
 
   Future getSumSpend() async{
     var dbClient = await db;
-    // List<Map<String, dynamic>> queryResual = await dbClient!.rawQuery('SELECT name, SUM(price) as price FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Chi" GROUP BY name');
-    // return queryResual.map((e) => sumName.fromMap(e)).toList();
    return await dbClient!.rawQuery('SELECT name, SUM(price), icon, color FROM manage, category WHERE manage.idCategory = category.idCategory AND type = "Chi" AND strftime("%m",dateTime) = strftime("%m","now") GROUP BY name');
   }
   
   Future sumIncomeMonth() async{
     var dbClient = await db;
-    return await dbClient!.rawQuery('SELECT strftime("%m", dateTime) as month, SUM(price) FROM manage WHERE type = "Thu" AND strftime("%Y", dateTime) = strftime("%Y", "now") ORDER by dateTime');
+    return await dbClient!.rawQuery('SELECT strftime("%m", dateTime) as month, SUM(price) FROM manage WHERE type = "Thu" AND strftime("%Y", dateTime) = strftime("%Y", "now") GROUP BY month ');
   }
 
 
   Future sumSpendMonth() async{
     var dbClient = await db;
-    return await dbClient!.rawQuery('SELECT strftime("%m", dateTime) as month, SUM(price) FROM manage WHERE type = "Chi" AND strftime("%Y", dateTime) = strftime("%Y", "now") ORDER by dateTime');
+    return await dbClient!.rawQuery('SELECT strftime("%m", dateTime) as month, SUM(price) FROM manage WHERE type = "Chi" AND strftime("%Y", dateTime) = strftime("%Y", "now") GROUP BY month ORDER By month');
   }
 
 

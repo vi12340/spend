@@ -124,7 +124,7 @@ class _chartState extends State<chart> {
                     ),
                   ),
                   Container(
-                    height: 175,
+                    height: 300,
                     padding: EdgeInsets.only(top: 20),
                     child: FutureBuilder(
                       future: dbHelper!.getSumInCome(),
@@ -208,7 +208,7 @@ class _chartState extends State<chart> {
                   ),
 
                   Container(
-                    height: 175,
+                    height: 300,
                     padding: EdgeInsets.only(top: 20),
                     child: FutureBuilder(
                       future: dbHelper!.getSumSpend(),

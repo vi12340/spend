@@ -2,7 +2,6 @@ import 'package:spend/config/textStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:spend/models/db_helper.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class chartLine extends StatefulWidget {
   const chartLine({super.key});
@@ -99,6 +98,7 @@ class _chartLineState extends State<chartLine> {
                       FlSpot fl = FlSpot(monthFull[i].toDouble(), 0);
                       listIncome.insert(monthFull[i] - 1, fl);
                     }
+
                   }
 
                   void check2() {
@@ -109,6 +109,7 @@ class _chartLineState extends State<chartLine> {
                       listSpend.add(fl);
                       month2.add(int.parse(snapshot2.data[i]['month']));
                     }
+
 
                     for (int i = 0; i < monthFull2.length; i++) {
                       for (int j = 0; j < month2.length; j++) {
@@ -123,9 +124,6 @@ class _chartLineState extends State<chartLine> {
                       listSpend.insert(monthFull2[i] - 1, fl);
                     }
                   }
-
-                  print(listIncome);
-                  print(listSpend);
 
                   check1();
                   check2();
@@ -168,12 +166,13 @@ class _chartLineState extends State<chartLine> {
                   List<int> month2 = [];
 
 
-                    void check1() {
+                  void check1() {
                       for (int i = 0; i < snapshot.data.length; i++) {
                         int fl = snapshot.data[i]['SUM(price)'];
                         income.add(fl);
                         month.add(int.parse(snapshot.data[i]['month']));
                       }
+
 
                       for (int i = 0; i < monthFull.length; i++) {
                         for (int j = 0; j < month.length; j++) {
@@ -195,6 +194,7 @@ class _chartLineState extends State<chartLine> {
                       month2.add(int.parse(snapshot2.data[i]['month']));
                     }
 
+
                     for (int i = 0; i < monthFull2.length; i++) {
                       for (int j = 0; j < month2.length; j++) {
                         if (monthFull2[i] == month2[j]) {
@@ -210,10 +210,13 @@ class _chartLineState extends State<chartLine> {
 
                     check1();
                     check2();
-                    print(income);
-                    print(spend);
 
-                  return DataTable(
+                    print(listIncome);
+                    print(listSpend);
+
+
+                  return
+                    DataTable(
                       columns: [
                         DataColumn(
                             label: Text('Month', style: addtextStyle.textstyle)),

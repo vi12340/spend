@@ -127,7 +127,7 @@ class _overviewState extends State<overview> {
                 ],
               ),
               Container(
-                  height: 500,
+                  height: 550,
                   padding: EdgeInsets.only(top: 20),
                   child:  list()),
             ]),
