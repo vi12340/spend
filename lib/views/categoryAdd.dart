@@ -60,7 +60,7 @@ class _categoryAddState extends State<categoryAdd> {
                           ),
 
                         Container(
-                          width: 240,
+                          width: 228,
                           padding: EdgeInsets.only(left: 10),
                           child: TextField(
                             controller: controller,
@@ -105,7 +105,7 @@ class _categoryAddState extends State<categoryAdd> {
                     ),
 
                     Container(
-                      height: 415,
+                      height: 530,
                       margin: EdgeInsets.only(top: 20),
                       child: GridView.builder(
                           itemCount: listIcon.length,
