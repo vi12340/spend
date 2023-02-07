@@ -23,7 +23,7 @@ class _addState extends State<add> {
   final controller = TextEditingController();
   DateTime date = DateTime.now();
   List<String> items = ['Thu', 'Chi'];
-  String? select;
+  String? select = 'Chi';
   String icon = 'lib/assets/icons/tax.png';
   String colors = '0xffFDE683';
   int idCategory = 1;
