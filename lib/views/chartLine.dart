@@ -209,90 +209,99 @@ class _chartLineState extends State<chartLine> {
                   print(listIncome);
                   print(listSpend);
 
-                  return DataTable(columns: [
-                    DataColumn(
-                        label: Text('Month', style: addtextStyle.textstyle)),
-                    DataColumn(
-                        label: Text('Revenue', style: addtextStyle.textstyle)),
-                    DataColumn(
-                        label:
-                            Text('Expaditure', style: addtextStyle.textstyle)),
-                    DataColumn(
-                        label: Text('Risk', style: addtextStyle.textstyle)),
-                  ], rows: [
-                    DataRow(cells: [
-                      DataCell(Text('1')),
-                      DataCell(Text(income[0].toString())),
-                      DataCell(Text(spend[0].toString())),
-                      DataCell(Text((income[0] - spend[0]).toString())),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(Text('2')),
-                      DataCell(Text(income[1].toString())),
-                      DataCell(Text(spend[1].toString())),
-                      DataCell(Text((income[1] - spend[1]).toString())),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(Text('3')),
-                      DataCell(Text(income[2].toString())),
-                      DataCell(Text(spend[2].toString())),
-                      DataCell(Text((income[2] - spend[2]).toString())),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(Text('4')),
-                      DataCell(Text(income[3].toString())),
-                      DataCell(Text(spend[3].toString())),
-                      DataCell(Text((income[3] - spend[3]).toString())),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(Text('5')),
-                      DataCell(Text(income[4].toString())),
-                      DataCell(Text(spend[4].toString())),
-                      DataCell(Text((income[4] - spend[4]).toString())),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(Text('6')),
-                      DataCell(Text(income[5].toString())),
-                      DataCell(Text(spend[5].toString())),
-                      DataCell(Text((income[5] - spend[5]).toString())),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(Text('7')),
-                      DataCell(Text(income[6].toString())),
-                      DataCell(Text(spend[6].toString())),
-                      DataCell(Text((income[6] - spend[6]).toString())),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(Text('8')),
-                      DataCell(Text(income[7].toString())),
-                      DataCell(Text(spend[7].toString())),
-                      DataCell(Text((income[7] - spend[7]).toString())),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(Text('9')),
-                      DataCell(Text(income[8].toString())),
-                      DataCell(Text(spend[8].toString())),
-                      DataCell(Text((income[8] - spend[8]).toString())),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(Text('10')),
-                      DataCell(Text(income[9].toString())),
-                      DataCell(Text(spend[9].toString())),
-                      DataCell(Text((income[9] - spend[9]).toString())),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(Text('11')),
-                      DataCell(Text(income[10].toString())),
-                      DataCell(Text(spend[10].toString())),
-                      DataCell(Text((income[10] - spend[10]).toString())),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(Text('12')),
-                      DataCell(Text(income[11].toString())),
-                      DataCell(Text(spend[11].toString())),
-                      DataCell(Text((income[11] - spend[11]).toString())),
-                    ]),
-                  ]);
+                  return SizedBox(
+                    height: 650,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        DataTable(
+                            columns: [
+                          DataColumn(
+                              label: Text('Month', style: addtextStyle.textstyle)),
+                          DataColumn(
+                              label: Text('Income', style: addtextStyle.textstyle)),
+                          DataColumn(
+                              label:
+                                  Text('Spend', style: addtextStyle.textstyle)),
+                          DataColumn(
+                              label: Text('Risk', style: addtextStyle.textstyle)),
+                        ], rows: [
+                          DataRow(cells: [
+                            DataCell(Text('   1')),
+                            DataCell(Text(income[0].toString())),
+                            DataCell(Text(spend[0].toString())),
+                            DataCell(Text((income[0] - spend[0]).toString())),
+                          ]),
+                          DataRow(cells: [
+                            DataCell(Text('   2')),
+                            DataCell(Text(income[1].toString())),
+                            DataCell(Text(spend[1].toString())),
+                            DataCell(Text((income[1] - spend[1]).toString())),
+                          ]),
+                          DataRow(cells: [
+                            DataCell(Text('   3')),
+                            DataCell(Text(income[2].toString())),
+                            DataCell(Text(spend[2].toString())),
+                            DataCell(Text((income[2] - spend[2]).toString())),
+                          ]),
+                          DataRow(cells: [
+                            DataCell(Text('   4')),
+                            DataCell(Text(income[3].toString())),
+                            DataCell(Text(spend[3].toString())),
+                            DataCell(Text((income[3] - spend[3]).toString())),
+                          ]),
+                          DataRow(cells: [
+                            DataCell(Text('   5')),
+                            DataCell(Text(income[4].toString())),
+                            DataCell(Text(spend[4].toString())),
+                            DataCell(Text((income[4] - spend[4]).toString())),
+                          ]),
+                          DataRow(cells: [
+                            DataCell(Text('   6')),
+                            DataCell(Text(income[5].toString())),
+                            DataCell(Text(spend[5].toString())),
+                            DataCell(Text((income[5] - spend[5]).toString())),
+                          ]),
+                          DataRow(cells: [
+                            DataCell(Text('   7')),
+                            DataCell(Text(income[6].toString())),
+                            DataCell(Text(spend[6].toString())),
+                            DataCell(Text((income[6] - spend[6]).toString())),
+                          ]),
+                          DataRow(cells: [
+                            DataCell(Text('   8')),
+                            DataCell(Text(income[7].toString())),
+                            DataCell(Text(spend[7].toString())),
+                            DataCell(Text((income[7] - spend[7]).toString())),
+                          ]),
+                          DataRow(cells: [
+                            DataCell(Text('   9')),
+                            DataCell(Text(income[8].toString())),
+                            DataCell(Text(spend[8].toString())),
+                            DataCell(Text((income[8] - spend[8]).toString())),
+                          ]),
+                          DataRow(cells: [
+                            DataCell(Text('   10')),
+                            DataCell(Text(income[9].toString())),
+                            DataCell(Text(spend[9].toString())),
+                            DataCell(Text((income[9] - spend[9]).toString())),
+                          ]),
+                          DataRow(cells: [
+                            DataCell(Text('   11')),
+                            DataCell(Text(income[10].toString())),
+                            DataCell(Text(spend[10].toString())),
+                            DataCell(Text((income[10] - spend[10]).toString())),
+                          ]),
+                          DataRow(cells: [
+                            DataCell(Text('   12')),
+                            DataCell(Text(income[11].toString())),
+                            DataCell(Text(spend[11].toString())),
+                            DataCell(Text((income[11] - spend[11]).toString())),
+                          ]),
+                        ]),
+                      ],
+                    ),
+                  );
                 } else {
                   return Center(child: CircularProgressIndicator());
                 }
